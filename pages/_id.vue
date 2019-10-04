@@ -5,7 +5,13 @@
       <div class="body">
         <div class="flex">
           <div class="flex-grow">
-            <p class="max-width">Proactively harness sticky deliverables via bleeding-edge bandwidth. Distinctively e-enable error-free mindshare for cross-media materials. Assertively plagiarize clicks-and-mortar outsourcing before interdependent meta-services. Continually facilitate empowered potentialities after accurate convergence. Globally transform parallel.</p>
+            <p class="max-width">
+              Proactively harness sticky deliverables via bleeding-edge bandwidth.
+              Distinctively e-enable error-free mindshare for cross-media materials.
+              Assertively plagiarize clicks-and-mortar outsourcing before interdependent
+              meta-services.Continually facilitate empowered potentialities after
+              accurate convergence. Globally transform parallel.
+            </p>
           </div>
           <img src="/images/trusted.svg" alt="Trusted">
         </div>
@@ -32,7 +38,7 @@
           </tr>
           <tr>
             <td>Status:</td>
-            <td><status valid/></td>
+            <td><status valid /></td>
           </tr>
         </table>
       </div>

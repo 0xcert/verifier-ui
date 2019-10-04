@@ -1,11 +1,11 @@
 <template>
-  <div class="status" v-if="valid" >
+  <div v-if="valid" class="status">
     <img src="/images/valid.svg" alt="">
-      Valid
+    Valid
   </div>
-  <div class="status" v-else>
+  <div v-else class="status">
     <img src="/images/invalid.svg" alt="">
-      Not valid
+    Not valid
   </div>
 </template>
 
