@@ -1,3 +1,4 @@
+/* Variables  */
 
 :root {
   --box-shadow: 0px 1px 3px 0 rgba(0, 0, 0, 0.2);
@@ -11,6 +12,7 @@
   --grey: rgba(0,0,0,0.6);
   --quick: cubic-bezier(.4,0,.2,1) .2s;
   --border: 1px solid #E6E6E6;
+  --border-color: #E6E6E6;
 }
 
 html {
@@ -25,14 +27,6 @@ html {
   box-sizing: border-box;
 }
 
-body {
-  background-color: var(--main-bg);
-}
-
-h1 {
-  margin-bottom: 1rem;
-}
-
 *,
 *:before,
 *:after {
@@ -40,21 +34,44 @@ h1 {
   margin: 0;
 }
 
-.box {
-  box-shadow: var(--box-shadow);
-  background: white;
-  font-size: 14px;
-  border-radius: var(--global-radius);
-  transition: box-shadow var(--quick);
-  color: var(--grey);
+body {
+  background-color: var(--main-bg);
 }
 
-.box p {
-  margin-bottom: 0 !important;
+/* Typography */
+
+h1 {
+  margin-bottom: 1rem;
+  font-weight: 400;
+  color: black;
+}
+
+a {
+  color: var(--primary-color);
+}
+
+a:hover {
+  text-decoration: none;
 }
 
 ul {
   margin: 1rem 0;
+}
+
+/* Layout */
+
+.box {
+  box-shadow: var(--box-shadow);
+  background: white;
+  border-radius: var(--global-radius);
+  transition: box-shadow var(--quick);
+  color: var(--grey);
+  line-height: 1.6;
+  padding: 2rem;
+}
+
+.box p {
+  margin-bottom: 0 !important;
 }
 
 .button {
@@ -75,14 +92,6 @@ ul {
   box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.2);
   background: var(--primary-color);
   color: white;
-  text-decoration: none;
-}
-
-a {
-  color: var(--primary-color);
-}
-
-a:hover {
   text-decoration: none;
 }
 

@@ -19,6 +19,6 @@ export default {
   font-size: 12px;
   border-top: var(--border);
   padding-top: 1rem;
-  margin-top: 1rem;
+  margin-top: 2rem;
 }
 </style>

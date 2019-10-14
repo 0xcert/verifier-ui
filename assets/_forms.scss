@@ -1,0 +1,99 @@
+/* Change Autocomplete styles in Chrome*/
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0px 1000px #FFF inset;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+.input,
+[type='text'],
+[type='number'],
+[type='password'],
+[type='email'],
+textarea {
+  border: none;
+  font-size: 16px;
+  transition: all var(--quick);
+  resize: none;
+
+  &:focus {
+    outline: none;
+  }
+}
+
+textarea {
+  display: block;
+}
+
+.form-group {
+  position: relative;
+  padding: 15px 0 0;
+  margin-top: 10px;
+  max-width: 600px;
+
+  label {
+    pointer-events: none;    
+  }
+
+  .alert {
+    display: block;
+    color: var(--red);
+    font-size: 13px;
+    margin-top: 3px;
+  }
+
+  .description {
+    font-size: 13px;
+    margin-top: 3px;
+    color: #9b9b9b;
+  }  
+}
+
+.form-field {
+  font-family: inherit;
+  width: 100%;
+  border: 0;
+  border-bottom: 1px solid #d2d2d2;
+  outline: 0;
+  font-size: 16px;
+  color: #212121;
+  padding: 7px 0;
+  background: transparent;
+  transition: border-color 0.2s;
+}
+
+.form-field::placeholder {
+  color: transparent;
+}
+
+.form-field:placeholder-shown ~ label {
+  font-size: 16px;
+  cursor: text;
+  top: 20px;
+}
+
+.form-group label,
+.form-field:focus ~ label {
+  position: absolute;
+  top: 0;
+  display: block;
+  transition: 0.2s;
+  font-size: 12px;
+  color: #9b9b9b;
+}
+
+.form-field:focus ~ label {
+  color: var(--primary-color);
+}
+
+.form-field:focus {
+  padding-bottom: 6px;
+  border-bottom: 2px solid var(--primary-color);
+}

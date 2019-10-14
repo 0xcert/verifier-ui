@@ -14,13 +14,11 @@ export default {
 }
 </script>
 
-<style lang="css" scoped>
+<style scoped>
 .header {
   display: flex;
   justify-content: space-between;
-  border-bottom: var(--border);
-  padding-bottom: 1rem;
-  margin-bottom: 1rem;
+  margin-bottom: 2.5rem;
 }
 
 .powered {

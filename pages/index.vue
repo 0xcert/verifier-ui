@@ -15,7 +15,12 @@
           <img width="95" height="54" src="/images/0xcert-verified.png" alt="0xcert verified">
         </div>
         <div class="cta">
-          <n-link to="/" class="button">Get in touch</n-link>
+          <n-link
+            to="/verify"
+            class="button"
+          >
+            Start verifying
+          </n-link>
         </div>
       </div>
       <Notice />
@@ -41,14 +46,6 @@ export default {
 <style>
 .main {
   max-width: 650px;
-}
-
-.box {
-  padding: 2rem;
-}
-
-.body {
-  color: black;
 }
 
 .cta {
