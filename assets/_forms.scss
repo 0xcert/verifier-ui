@@ -33,6 +33,7 @@ textarea {
 }
 
 .form-group {
+  display: block;
   position: relative;
   padding: 15px 0 0;
   margin-top: 10px;
@@ -44,7 +45,7 @@ textarea {
 
   .alert {
     display: block;
-    color: var(--red);
+    color: var(--alert);
     font-size: 13px;
     margin-top: 3px;
   }
@@ -96,4 +97,38 @@ textarea {
 .form-field:focus {
   padding-bottom: 6px;
   border-bottom: 2px solid var(--primary-color);
+}
+
+button {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+
+  &:focus {
+    outline: none;
+  }
+}
+
+.button {
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem 1.5rem;
+  text-transform: uppercase;
+  border-radius: var(--global-radius);
+  font-size: 14px;
+  font-weight: bold;
+  letter-spacing: 0.08em;
+  text-align: center;
+  min-width: 96px;
+  line-height: 1;
+  transition: all var(--quick);
+  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.2);
+  background: var(--primary-color);
+  color: white;
+  text-decoration: none;
+}
+
+.button:hover {
+  background: var(--primary-color-hover);
 }

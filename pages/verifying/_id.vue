@@ -61,10 +61,6 @@ export default {
 </script>
 
 <style>
-.main {
-  max-width: 650px;
-}
-
 .max-width {
   max-width: 460px;
   flex-grow: 1;

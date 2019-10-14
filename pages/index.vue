@@ -44,10 +44,6 @@ export default {
 </script>
 
 <style>
-.main {
-  max-width: 650px;
-}
-
 .cta {
   display: flex;
   justify-content: center;

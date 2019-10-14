@@ -9,6 +9,7 @@
   --primary-color: #0C71FF;
   --primary-color-hover: #3C8CFF;
   --main-bg: #ECEFF1;
+  --alert: #CA6A6A;
   --grey: rgba(0,0,0,0.6);
   --quick: cubic-bezier(.4,0,.2,1) .2s;
   --border: 1px solid #E6E6E6;
@@ -60,6 +61,10 @@ ul {
 
 /* Layout */
 
+.main {
+  max-width: 650px;
+}
+
 .box {
   box-shadow: var(--box-shadow);
   background: white;
@@ -72,31 +77,6 @@ ul {
 
 .box p {
   margin-bottom: 0 !important;
-}
-
-.button {
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 1rem 1.5rem;
-  text-transform: uppercase;
-  border-radius: var(--global-radius);
-  font-size: 14px;
-  font-weight: bold;
-  letter-spacing: 0.08em;
-  text-align: center;
-  min-width: 96px;
-  line-height: 1;
-  transition: all var(--quick);
-  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.2);
-  background: var(--primary-color);
-  color: white;
-  text-decoration: none;
-}
-
-.button:hover {
-  background: var(--primary-color-hover);
 }
 
 .container {
