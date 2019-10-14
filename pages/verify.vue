@@ -5,34 +5,34 @@
       <div class="body">
         <h1>Verify your asset</h1>
         <p>Fill the fields and validate an asset online, completely decentralized. </p>
-        <ValidationObserver v-slot="{ passes }" >
-          <form @submit.prevent="passes(verifyAsset)" class="form mt-1">
-            <validation-provider 
-              rules="required" 
-              v-slot="{ errors }" 
+        <ValidationObserver v-slot="{ passes }">
+          <form class="form mt-1" @submit.prevent="passes(verifyAsset)">
+            <validation-provider
+              v-slot="{ errors }"
+              rules="required"
               name="DID"
               :class="'form-group'"
             >
               <input
-                type="text"
                 v-model="data.did"
+                type="text"
                 class="form-field"
                 placeholder="Enter a valid DID."
               >
               <label for="email" v-text="'Enter a valid DID'" />
               <div class="alert" v-text="errors[0]" />
             </validation-provider>
-            <validation-provider 
-              rules="required|json" 
-              v-slot="{ errors }" 
+            <validation-provider
+              v-slot="{ errors }"
+              rules="required|json"
               name="Schema"
               :class="'form-group'"
             >
               <resizable-textarea>
                 <textarea
+                  v-model="data.schema"
                   type="text"
                   rows="1"
-                  v-model="data.schema"
                   class="form-field code"
                   placeholder="Enter a valid asset schema."
                 />
@@ -40,17 +40,17 @@
               <label for="schema" v-text="'Enter a valid asset schema.'" />
               <div class="alert" v-text="errors[0]" />
             </validation-provider>
-            <validation-provider 
-              rules="required|json" 
-              v-slot="{ errors }" 
+            <validation-provider
+              v-slot="{ errors }"
+              rules="required|json"
               name="Evidence"
               :class="'form-group'"
             >
               <resizable-textarea>
                 <textarea
+                  v-model="data.evidence"
                   type="text"
                   rows="1"
-                  v-model="data.evidence"
                   class="form-field code"
                   placeholder="Enter a valid asset evidence"
                 />
@@ -58,17 +58,17 @@
               <label for="evidence" v-text="'Enter a valid asset evidence'" />
               <div class="alert" v-text="errors[0]" />
             </validation-provider>
-            <validation-provider 
-              rules="required|json" 
-              v-slot="{ errors }" 
+            <validation-provider
+              v-slot="{ errors }"
+              rules="required|json"
               name="Metadata"
               :class="'form-group'"
             >
               <resizable-textarea>
                 <textarea
+                  v-model="data.metadata"
                   type="text"
                   rows="1"
-                  v-model="data.metadata"
                   class="form-field code"
                   placeholder="Enter asset Metadata"
                 />
@@ -89,28 +89,28 @@
 </template>
 
 <script>
+import { ValidationObserver, ValidationProvider, extend, localize } from 'vee-validate'
+import { required, email } from 'vee-validate/dist/rules'
+import en from 'vee-validate/dist/locale/en.json'
 import Footer from '~/components/Footer'
 import Header from '~/components/Header'
 import Notice from '~/components/Notice'
 import ResizableTextarea from '~/components/ResizableTextarea'
-import { ValidationObserver, ValidationProvider, extend, localize } from "vee-validate";
-import { min, required, email } from "vee-validate/dist/rules";
-import en from "vee-validate/dist/locale/en.json";
 
-extend("required", required);
-extend("email", email);
-localize({ en });
+extend('required', required)
+extend('email', email)
+localize({ en })
 extend('json', {
   message: 'The {_field_} filed is not a valid JSON.',
   validate: (value) => {
     try {
-      JSON.parse(value);
-      return true;
+      JSON.parse(value)
+      return true
     } catch (error) {
-      return false;
+      return false
     }
   }
-});
+})
 
 export default {
   components: {
@@ -121,13 +121,13 @@ export default {
     ValidationProvider,
     ValidationObserver
   },
-  data() {
+  data () {
     return {
       data: {}
     }
   },
   methods: {
-    verifyAsset() {
+    verifyAsset () {
       this.$router.push('/isvalid/data')
     }
   }
