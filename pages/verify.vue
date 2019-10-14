@@ -76,6 +76,20 @@
               <label for="metadata" v-text="'Enter asset Metadata'" />
               <div class="alert" v-text="errors[0]" />
             </validation-provider>
+            <div class="form-group">
+              <select v-model="network" name="network" class="form-field select">
+                <option :value="1">
+                  Mainnet
+                </option>
+                <option :value="2">
+                  Rinkeby
+                </option>
+                <option :value="3">
+                  Ropsten
+                </option>
+              </select>
+              <label for="metadata" v-text="'Select network'" />
+            </div>
             <button type="submit" class="button mt-2">
               Verify Asset
             </button>
@@ -123,7 +137,8 @@ export default {
   },
   data () {
     return {
-      data: {}
+      data: {},
+      network: 1
     }
   },
   methods: {

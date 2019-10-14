@@ -37,6 +37,9 @@
             <td><status valid /></td>
           </tr>
         </table>
+        <n-link to="/verify" class="button">
+          Verify another Asset
+        </n-link>
       </div>
       <Notice />
     </div>

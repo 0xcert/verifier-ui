@@ -98,13 +98,20 @@ textarea {
   border-bottom: 2px solid var(--primary-color);
 }
 
-button {
+button,
+select {
   -webkit-appearance: none;
   -moz-appearance: none;
+  border-radius: 0;
 
   &:focus {
     outline: none;
   }
+}
+
+.select {
+  background: url('/images/arrow-down.svg') no-repeat right;
+  cursor: pointer;
 }
 
 .button {
