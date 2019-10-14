@@ -97,9 +97,9 @@ import { ValidationObserver, ValidationProvider, extend, localize } from "vee-va
 import { min, required, email } from "vee-validate/dist/rules";
 import en from "vee-validate/dist/locale/en.json";
 
-localize({ en });
 extend("required", required);
 extend("email", email);
+localize({ en });
 extend('json', {
   message: 'The {_field_} filed is not a valid JSON.',
   validate: (value) => {
