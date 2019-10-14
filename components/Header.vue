@@ -1,8 +1,8 @@
 <template>
   <div class="header">
-    <div class="logo">
+    <n-link to="/" class="logo">
       <img src="/images/0xcert-verify.svg" alt="0xcert verify">
-    </div>
+    </n-link>
     <div class="powered">
       <img src="/images/poweredby.svg" alt="Powered by 0xcert Framework">
     </div>

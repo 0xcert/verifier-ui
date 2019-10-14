@@ -3,10 +3,10 @@
     <div class="main box">
       <Header />
       <div class="body">
-        <h1>Validate your asset</h1>
+        <h1>Verify your asset</h1>
         <p>Fill the fields and validate an asset online, completely decentralized. </p>
         <ValidationObserver v-slot="{ passes }" >
-          <form @submit.prevent="passes(verifyAsset)" class="'form mt-1'">
+          <form @submit.prevent="passes(verifyAsset)" class="form mt-1">
             <validation-provider 
               rules="required" 
               v-slot="{ errors }" 
@@ -23,7 +23,7 @@
               <div class="alert" v-text="errors[0]" />
             </validation-provider>
             <validation-provider 
-              rules="required" 
+              rules="required|json" 
               v-slot="{ errors }" 
               name="Schema"
               :class="'form-group'"
@@ -33,7 +33,7 @@
                   type="text"
                   rows="1"
                   v-model="data.schema"
-                  class="form-field"
+                  class="form-field code"
                   placeholder="Enter a valid asset schema."
                 />
               </resizable-textarea>
@@ -41,7 +41,7 @@
               <div class="alert" v-text="errors[0]" />
             </validation-provider>
             <validation-provider 
-              rules="required" 
+              rules="required|json" 
               v-slot="{ errors }" 
               name="Evidence"
               :class="'form-group'"
@@ -51,7 +51,7 @@
                   type="text"
                   rows="1"
                   v-model="data.evidence"
-                  class="form-field"
+                  class="form-field code"
                   placeholder="Enter a valid asset evidence"
                 />
               </resizable-textarea>
@@ -59,7 +59,7 @@
               <div class="alert" v-text="errors[0]" />
             </validation-provider>
             <validation-provider 
-              rules="required" 
+              rules="required|json" 
               v-slot="{ errors }" 
               name="Metadata"
               :class="'form-group'"
@@ -69,7 +69,7 @@
                   type="text"
                   rows="1"
                   v-model="data.metadata"
-                  class="form-field"
+                  class="form-field code"
                   placeholder="Enter asset Metadata"
                 />
               </resizable-textarea>
@@ -97,9 +97,20 @@ import { ValidationObserver, ValidationProvider, extend, localize } from "vee-va
 import { min, required, email } from "vee-validate/dist/rules";
 import en from "vee-validate/dist/locale/en.json";
 
+localize({ en });
 extend("required", required);
 extend("email", email);
-localize({ en });
+extend('json', {
+  message: 'The {_field_} filed is not a valid JSON.',
+  validate: (value) => {
+    try {
+      JSON.parse(value);
+      return true;
+    } catch (error) {
+      return false;
+    }
+  }
+});
 
 export default {
   components: {
@@ -117,7 +128,7 @@ export default {
   },
   methods: {
     verifyAsset() {
-      alert('Verified!')
+      this.$router.push('/isvalid/data')
     }
   }
 }
@@ -125,5 +136,4 @@ export default {
 
 <style lang="scss">
 @import '~assets/_forms.scss';
-
 </style>

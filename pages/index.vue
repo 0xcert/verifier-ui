@@ -14,14 +14,12 @@
           <p>Proactively harness sticky deliverables via bleeding-edge bandwidth. Distinctively e-enable error-free mindshare for cross-media materials. Identifier accurate convergence</p>
           <img width="95" height="54" src="/images/0xcert-verified.png" alt="0xcert verified">
         </div>
-        <div class="cta">
-          <n-link
-            to="/verify"
-            class="button"
-          >
-            Start verifying
-          </n-link>
-        </div>
+        <n-link
+          to="/verify"
+          class="button mt-2"
+        >
+          Start verifying
+        </n-link>
       </div>
       <Notice />
     </div>
@@ -42,11 +40,3 @@ export default {
   }
 }
 </script>
-
-<style>
-.cta {
-  display: flex;
-  justify-content: center;
-  margin: 1.5rem 0;
-}
-</style>
