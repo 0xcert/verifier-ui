@@ -8,6 +8,7 @@ textarea:-webkit-autofill:focus,
 select:-webkit-autofill,
 select:-webkit-autofill:hover,
 select:-webkit-autofill:focus {
+  box-shadow: 0 0 0px 1000px #FFF inset;
   -webkit-box-shadow: 0 0 0px 1000px #FFF inset;
   transition: background-color 5000s ease-in-out 0s;
 }
@@ -32,12 +33,16 @@ textarea {
   display: block;
 }
 
+.max-height {
+  max-height: 280px;
+  overflow-y: auto;
+}
+
 .form-group {
   display: block;
   position: relative;
   padding: 15px 0 0;
   margin-bottom: 8px;
-  max-width: 600px;
 
   label {
     pointer-events: none;    
@@ -116,9 +121,7 @@ select {
 
 .button {
   cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+  display: inline-block;
   padding: 1rem 1.5rem;
   text-transform: uppercase;
   border-radius: var(--global-radius);
@@ -137,4 +140,21 @@ select {
 
 .button:hover {
   background: var(--primary-color-hover);
+}
+
+.button-text {
+  cursor: pointer;  
+  padding: 1rem 1.5rem;
+  text-transform: uppercase;
+  color: var(--primary-color);
+  font-size: 14px;
+  font-weight: bold;
+  letter-spacing: 0.08em;
+  text-align: center;
+  border-radius: var(--global-radius);
+  transition: all var(--quick);  
+
+  &:hover {
+    background: var(--primary-lighter);
+  }
 }

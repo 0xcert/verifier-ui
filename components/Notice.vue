@@ -1,18 +1,8 @@
 <template>
   <div class="notice">
-    NOTICE: Proactively harness sticky deliverables via
-    bleeding-edge bandwidth. Distinctively e-enable error-free mindshare for cross-media materials.
-    Assertively plagiarize clicks-and-mortar outsourcing before interdependent meta-services.
-    Continually facilitate empowered potentialities after accurate convergence.
-    Globally transform parallel.
+    NOTICE: The verification process is done automatically and in a completely decentralized way, with only your browser connecting directly to the blockchain. The checked data is not stored on any server storage, and the Verifier source code is published publicly on GitHub. The 0xcert Verifier uses the <a href="https://infura.io/" target="_blank">Infura</a> infrastructure to verify assets on the Ethereum network, and _________to verify assets on the Wanchain network.
   </div>
 </template>
-
-<script>
-export default {
-
-}
-</script>
 
 <style lang="css" scoped>
 .notice {

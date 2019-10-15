@@ -3,15 +3,15 @@
     <div class="main box">
       <Header />
       <div class="body">
-        <h1>Get verified</h1>
-        <p>Proactively harness sticky deliverables via bleeding-edge bandwidth. Distinctively e-enable error-free mindshare for cross-media materials. Assertively plagiarize clicks-and-mortar outsourcing before interdependent meta-services.</p>
+        <h1>Verify and trust</h1>
+        <p>Check and confirm the validity of unique assets on the blockchain. Make sure the assets you own or you’re about to purchase live up to their name.</p>
         <ul>
-          <li>Continually facilitate empowered potential</li>
-          <li>Identifier accurate convergence</li>
-          <li>Globbaly transform parallel.</li>
+          <li>Check validity</li>
+          <li>Verify ownership and provenance</li>
+          <li>Inspect content and metadata.</li>
         </ul>
         <div class="flex">
-          <p>Proactively harness sticky deliverables via bleeding-edge bandwidth. Distinctively e-enable error-free mindshare for cross-media materials. Identifier accurate convergence</p>
+          <p>The 0xcert Verifier provides verification for assets on both Ethereum and Wanchain blockchain networks. The 0xcert Verifier is powered by the 0xcert Framework and the enhanced non-fungible token Xcert.</p>
           <img width="95" height="54" src="/images/0xcert-verified.png" alt="0xcert verified">
         </div>
         <n-link
@@ -21,7 +21,6 @@
           Start verifying
         </n-link>
       </div>
-      <Notice />
     </div>
     <Footer />
   </div>
@@ -30,11 +29,9 @@
 <script>
 import Footer from '~/components/Footer'
 import Header from '~/components/Header'
-import Notice from '~/components/Notice'
 
 export default {
   components: {
-    Notice,
     Header,
     Footer
   }

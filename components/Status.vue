@@ -1,11 +1,9 @@
 <template>
   <div v-if="valid" class="status">
     <img src="/images/valid.svg" alt="">
-    Valid
   </div>
   <div v-else class="status">
     <img src="/images/invalid.svg" alt="">
-    Not valid
   </div>
 </template>
 

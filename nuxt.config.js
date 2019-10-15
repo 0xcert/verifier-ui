@@ -23,6 +23,8 @@ export default {
   ],
   plugins: [
   ],
+  scrollToTop: true,
+  pageTransition: 'fade',
   buildModules: [
     '@nuxtjs/eslint-module'
   ],
