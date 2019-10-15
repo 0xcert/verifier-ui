@@ -79,6 +79,10 @@ ul {
   color: var(--grey);
   line-height: 1.6;
   padding: 2rem;
+  
+  @include breakpoint(medium) {
+    margin-top: 2rem;
+  }
 }
 
 .box p {

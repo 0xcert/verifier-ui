@@ -3,6 +3,6 @@
     <nuxt />
   </div>
 </template>
-<style>
-@import '~/assets/global.css';
+<style lang="scss">
+@import '~/assets/global.scss';
 </style>
