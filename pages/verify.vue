@@ -97,7 +97,7 @@
             </form>
           </ValidationObserver>
         </div>
-        <div v-if="loading" key="loading" class="loading">
+        <div v-else-if="loading" key="loading" class="loading">
           Loading ...
         </div>
         <div v-else key="results" class="results">
