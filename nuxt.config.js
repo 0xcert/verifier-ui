@@ -26,29 +26,17 @@ export default {
   buildModules: [
     '@nuxtjs/eslint-module'
   ],
+  eslint: {
+    quiet: true,
+    fix: true
+  },
   modules: [
     '@nuxtjs/axios',
     '@nuxtjs/style-resources'
   ],
-  /*
-  ** Axios module configuration
-  ** See https://axios.nuxtjs.org/options
-  */
   axios: {
   },
   build: {
-    extend (config, ctx) {
-      if (ctx.isDev && ctx.isClient) {
-        config.module.rules.push({
-          enforce: 'pre',
-          test: /\.(js|vue)$/,
-          loader: 'eslint-loader',
-          exclude: /(node_modules)/,
-          options: {
-            fix: true
-          }
-        })
-      }
-    }
+    extend (config, ctx) {}
   }
 }
