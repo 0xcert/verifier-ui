@@ -23,7 +23,7 @@
         <tr v-for="(row, key) in flatten(metadata)" :key="row[key]">
           <td>{{ key }}</td>
           <td>{{ row }}</td>
-          <td><status valid /></td>
+          <td><status invalid /></td>
         </tr>
       </tbody>
     </table>

@@ -125,6 +125,7 @@
           </ValidationObserver>
         </div>
         <div v-else-if="loading" key="loading" class="loading">
+          <img src="~/assets/loader.svg" alt="Loader" class="mb-2">
           Verifying ...
         </div>
         <div v-else key="results" class="results">
@@ -265,6 +266,7 @@ export default {
 .loading {
   min-height: 462px;
   display: flex;
+  flex-flow: column;
   justify-content: center;
   align-items: center;
 }
