@@ -6,10 +6,11 @@
           Here are the results of the 0xcert Verifier check.
         </p>
         <p class="max-width">
-          Below, you can see the validity of each of the asset’s metadata field. If the status is “Unavailable”, the value of that field cannot be checked since it's set as private within the asset.
+          Below, you can see the validity of each of the asset’s metadata field. If the status is “Unavailable”, the value of that field cannot be checked since it's set as private or does not exist within the asset.
         </p>
       </div>
-      <img src="/images/trusted.svg" alt="Trusted">
+      <img v-if="data.isValid" src="/images/trusted.svg" alt="Valid">
+      <img v-else src="/images/untrusted.svg" alt="Not valid">
     </div>
     <table class="table">
       <thead>
@@ -23,8 +24,12 @@
         <tr v-for="(row, key) in flatten(metadata)" :key="row[key]">
           <td>{{ key }}</td>
           <td>{{ row }}</td>
-          <!-- isDescribedBySchema(key, schema) -->
-          <td><status invalid /></td>
+          <td v-if="data.isValid">
+            <status :icon="isDescribedBySchema(key, schema) ? 'valid' : 'warning' " />
+          </td>
+          <td v-else>
+            <status :icon="'invalid'" />
+          </td>
         </tr>
       </tbody>
     </table>
@@ -47,6 +52,9 @@ export default {
   computed: {
     metadata () {
       return this.data.metadata ? JSON.parse(this.data.metadata) : {}
+    },
+    schema () {
+      return this.data.schema ? JSON.parse(this.data.schema) : {}
     }
   },
   methods: {
@@ -72,30 +80,29 @@ export default {
 
       return result
     },
-    isDescribedBySchema(path, schema) {
+    isDescribedBySchema (path, schema) {
       path = Array.isArray(path) ? path : path.split('.')
       if (path.length > 0) {
         if (schema.type === 'object') {
-          const keys = Object.keys(schema.properties);
-          if (keys.indexOf(path[0]) !== -1) {
-            return isDescribedBySchema(path.slice(1), schema.properties[path[0]]);
+          const keys = Object.keys(schema.properties)
+          if (keys.includes(path[0])) {
+            return this.isDescribedBySchema(path.slice(1), schema.properties[path[0]])
           } else {
-            return false;
+            return false
           }
         } else if (schema.type === 'array') {
           if (isNaN(path[0])) { // is numeric
-            return false;
+            return false
           } else {
-            return path.length > 1 ? isDescribedBySchema(path.slice(1), schema.items) : true;
+            return path.length > 1 ? this.isDescribedBySchema(path.slice(1), schema.items) : true
           }
         } else {
-          return false;
+          return false
         }
       } else {
-        return true;
+        return true
       }
     }
-
   }
 }
 </script>
@@ -128,5 +135,9 @@ export default {
     td:nth-child(2) {
       width: 100%;
     }
+  }
+
+  .max-width {
+    padding-right: 1rem;
   }
 </style>

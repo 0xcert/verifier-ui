@@ -1,18 +1,17 @@
 <template>
-  <div v-if="valid" class="status">
-    <img src="/images/valid.svg" alt="">
-  </div>
-  <div v-else class="status">
-    <img src="/images/invalid.svg" alt="">
+  <div class="status">
+    <img v-if="icon === 'valid'" src="/images/valid.svg" alt="Valid">
+    <img v-if="icon === 'invalid'" src="/images/invalid.svg" alt="Invalid">
+    <img v-if="icon === 'warning'" src="/images/warning.svg" alt="Unknown">
   </div>
 </template>
 
 <script>
 export default {
   props: {
-    valid: {
-      type: Boolean,
-      default: false
+    icon: {
+      type: String,
+      default: ''
     }
   }
 }
