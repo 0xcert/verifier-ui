@@ -23,6 +23,7 @@
         <tr v-for="(row, key) in flatten(metadata)" :key="row[key]">
           <td>{{ key }}</td>
           <td>{{ row }}</td>
+          <!-- isDescribedBySchema(key, schema) -->
           <td><status invalid /></td>
         </tr>
       </tbody>
@@ -70,7 +71,31 @@ export default {
       }
 
       return result
+    },
+    isDescribedBySchema(path, schema) {
+      path = Array.isArray(path) ? path : path.split('.')
+      if (path.length > 0) {
+        if (schema.type === 'object') {
+          const keys = Object.keys(schema.properties);
+          if (keys.indexOf(path[0]) !== -1) {
+            return isDescribedBySchema(path.slice(1), schema.properties[path[0]]);
+          } else {
+            return false;
+          }
+        } else if (schema.type === 'array') {
+          if (isNaN(path[0])) { // is numeric
+            return false;
+          } else {
+            return path.length > 1 ? isDescribedBySchema(path.slice(1), schema.items) : true;
+          }
+        } else {
+          return false;
+        }
+      } else {
+        return true;
+      }
     }
+
   }
 }
 </script>
