@@ -100,21 +100,11 @@
               </validation-provider>
               <div class="form-group">
                 <select v-model="network" name="network" class="form-field select">
-                  <option :value="1">
-                    Ethereum - Mainnet
-                  </option>
-                  <option :value="2">
-                    Ethereum - Rinkeby
-                  </option>
-                  <option :value="3">
-                    Ethereum - Ropsten
-                  </option>
-                  <option :value="4">
-                    Wanchain - Mainnet
-                  </option>
-                  <option :value="5">
-                    Wanchain - Testnet
-                  </option>
+                  <option :value="1" v-text="'Ethereum - Mainnet'" />
+                  <option :value="2" v-text="'Ethereum - Rinkeby'" />
+                  <option :value="3" v-text="'Ethereum - Ropsten'" />
+                  <option :value="4" v-text="'Wanchain - Mainnet'" />
+                  <option :value="5" v-text="'Wanchain - Testnet'" />
                 </select>
                 <label for="metadata" v-text="'Select network'" />
               </div>
@@ -126,7 +116,7 @@
         </div>
         <div v-else-if="loading" key="loading" class="loading">
           <img src="~/assets/loader.svg" alt="Loader" class="mb-2">
-          Verifying ...
+          Verifying asset ...
         </div>
         <div v-else key="results" class="results">
           <results :data="data" />
