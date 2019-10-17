@@ -12,7 +12,7 @@
         </ul>
         <div class="flex">
           <p>The 0xcert Verifier provides verification for assets on both Ethereum and Wanchain blockchain networks. The 0xcert Verifier is powered by the 0xcert Framework and the enhanced non-fungible token Xcert.</p>
-          <img width="95" height="54" src="/images/0xcert-verified.png" alt="0xcert verified">
+          <img width="95" height="54" src="/verifier/images/0xcert-verified.png" alt="0xcert verified">
         </div>
         <n-link
           to="/verify"

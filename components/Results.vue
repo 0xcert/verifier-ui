@@ -2,17 +2,20 @@
   <div class="body">
     <div class="flex">
       <div class="flex-grow">
+        <h1 v-if="data.isValid">
+          The asset is valid.
+        </h1>
+        <h1 v-esle>
+          The asset is invalid.
+        </h1>
         <p class="max-width">
-          Here are the results of the 0xcert Verifier check.
-        </p>
-        <p class="max-width">
-          Below, you can see the validity of each of the asset’s metadata field. If the status is “Unavailable”, the value of that field cannot be checked since it's set as private or does not exist within the asset.
+          Below, you can see the status of each of the asset’s metadata field. If the status is ⚠️, the value of that field cannot be checked since it's set as private or does not exist within the asset.
         </p>
       </div>
       <img v-if="data.isValid" src="/images/trusted.svg" alt="Valid">
       <img v-else src="/images/untrusted.svg" alt="Not valid">
     </div>
-    <table class="table">
+    <table v-if="Object.keys(metadata).length != 0" class="table">
       <thead>
         <tr>
           <td>Field</td>

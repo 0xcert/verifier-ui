@@ -100,11 +100,12 @@
               </validation-provider>
               <div class="form-group">
                 <select v-model="formData.network" name="network" class="form-field select">
-                  <option :value="1" v-text="'Ethereum - Mainnet'" />
-                  <option :value="2" v-text="'Ethereum - Rinkeby'" />
-                  <option :value="3" v-text="'Ethereum - Ropsten'" />
-                  <option :value="4" v-text="'Wanchain - Mainnet'" />
-                  <option :value="5" v-text="'Wanchain - Testnet'" />
+                  <option
+                    v-for="network in networks"
+                    :key="network.id"
+                    :value="network.id"
+                    v-text="network.label"
+                  />
                 </select>
                 <label for="metadata" v-text="'Select network'" />
               </div>
@@ -120,7 +121,7 @@
         </div>
         <div v-else key="results" class="results">
           <results :data="formData" />
-          <a class="button-text" @click="resetForm()">
+          <a class="button mt-2" @click="resetForm()">
             Verify Another Asset
           </a>
         </div>
@@ -183,37 +184,76 @@ export default {
         isValid: false
       },
       submitted: false,
-      loading: false
+      loading: false,
+      networks: [
+        {
+          id: 1,
+          label: 'Ethereum - Mainnet',
+          url: 'https://mainnet.infura.io/v3/a491d5932d4d47b58f4ba2e043278ac4'
+        },
+        {
+          id: 2,
+          label: 'Ethereum - Rinkeby',
+          url: 'https://rinkeby.infura.io/v3/a491d5932d4d47b58f4ba2e043278ac4'
+        },
+        {
+          id: 3,
+          label: 'Ethereum - Ropsten',
+          url: 'https://ropsten.infura.io/v3/a491d5932d4d47b58f4ba2e043278ac4'
+        },
+        {
+          id: 4,
+          label: 'Ethereum - Kovan',
+          url: 'https://kovan.infura.io/v3/a491d5932d4d47b58f4ba2e043278ac4'
+        },
+        {
+          id: 5,
+          label: 'Ethereum - Goerli',
+          url: 'https://goerli.infura.io/v3/a491d5932d4d47b58f4ba2e043278ac4'
+        },
+        {
+          id: 6,
+          label: 'Wanchain - Mainnet',
+          url: 'http://139.59.44.13:9000/node/5c9a341860626f3d2aad1dc0'
+        },
+        {
+          id: 7,
+          label: 'Wanchain - Testnet',
+          url: 'http://139.59.44.13:9000/node/5c9a341860626f3d2aad1dc0'
+        }
+      ]
     }
   },
   computed: {
-    httpProvider () {
-      switch (this.formData.network) {
-        case 1: // ethereum mainnet
-          return new EthereumHttpProvider({ url: 'https://mainnet.infura.io/v3/a491d5932d4d47b58f4ba2e043278ac4' })
-        case 2: // ethereum rinkeby
-          return new EthereumHttpProvider({ url: 'https://rinkeby.infura.io/v3/a491d5932d4d47b58f4ba2e043278ac4' })
-        case 3: // ethereum ropsten
-          return new EthereumHttpProvider({ url: 'https://ropsten.infura.io/v3/a491d5932d4d47b58f4ba2e043278ac4' })
-        case 4: // wanchain mainnet
-          return new WanchainHttpProvider({ url: '' })
-        case 5: // wanchain testnet
-          return new WanchainHttpProvider({ url: 'http://139.59.44.13:9000/node/5c9a341860626f3d2aad1dc0' })
-        default:
-          throw new Error('Invalid network ID [1]')
-      }
+    currentNetwork () {
+      return this.networks.find(x => x.id === this.formData.network)
     },
     assetLedger () {
+      let httpProvider
       switch (this.formData.network) {
-        case 1: // ethereum mainnet
-        case 2: // ethereum rinkeby
-        case 3: // ethereum ropsten
-          return new EthereumAssetLedger(this.httpProvider, this.formData.assetLedgerId)
-        case 4: // wanchain mainnet
-        case 5: // wanchain testnet
-          return new WanchainAssetLedger(this.httpProvider, this.formData.assetLedgerId)
+        case 1:
+          httpProvider = new EthereumHttpProvider({ url: this.currentNetwork.url })
+          return new EthereumAssetLedger(httpProvider, this.formData.assetLedgerId)
+        case 2:
+          httpProvider = new EthereumHttpProvider({ url: this.currentNetwork.url })
+          return new EthereumAssetLedger(httpProvider, this.formData.assetLedgerId)
+        case 3:
+          httpProvider = new EthereumHttpProvider({ url: this.currentNetwork.url })
+          return new EthereumAssetLedger(httpProvider, this.formData.assetLedgerId)
+        case 4:
+          httpProvider = new EthereumHttpProvider({ url: this.currentNetwork.url })
+          return new EthereumAssetLedger(httpProvider, this.formData.assetLedgerId)
+        case 5:
+          httpProvider = new EthereumHttpProvider({ url: this.currentNetwork.url })
+          return new EthereumAssetLedger(httpProvider, this.formData.assetLedgerId)
+        case 6:
+          httpProvider = new WanchainHttpProvider({ url: this.currentNetwork.url })
+          return new WanchainAssetLedger(httpProvider, this.formData.assetLedgerId)
+        case 7:
+          httpProvider = new WanchainHttpProvider({ url: this.currentNetwork.url })
+          return new WanchainAssetLedger(httpProvider, this.formData.assetLedgerId)
         default:
-          throw new Error('Invalid network ID [2]')
+          throw new Error('Invalid network ID')
       }
     }
   },
