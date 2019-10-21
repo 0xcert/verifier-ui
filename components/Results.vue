@@ -5,7 +5,7 @@
         <h1 v-if="data.isValid">
           The asset is valid.
         </h1>
-        <h1 v-esle>
+        <h1 v-else>
           The asset is invalid.
         </h1>
         <p class="max-width">
@@ -114,7 +114,7 @@ export default {
 <style lang="scss" scoped>
   .table {
     width: 100%;
-    margin: 2rem 0;
+    margin: 2rem 0 0;
     border-collapse: collapse;
 
     td {
