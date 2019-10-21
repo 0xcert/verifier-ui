@@ -2,38 +2,319 @@
   <div class="container">
     <div class="main box">
       <Header />
-      <div class="body">
-        <h1>Verify and trust</h1>
-        <p>Check and confirm the validity of unique assets on the blockchain. Make sure the assets you own or you’re about to purchase live up to their name.</p>
-        <ul>
-          <li>Check validity</li>
-          <li>Verify ownership and provenance</li>
-          <li>Inspect content and metadata.</li>
-        </ul>
-        <div class="flex">
-          <p>The 0xcert Verifier provides verification for assets on both Ethereum and Wanchain blockchain networks. The 0xcert Verifier is powered by the 0xcert Framework and the enhanced non-fungible token Xcert.</p>
-          <img width="95" height="54" src="/verifier/images/0xcert-verified.png" alt="0xcert verified">
+      <transition name="fade" mode="out-in">
+        <div v-if="!submitted" key="input" class="body">
+          <h1>Verify your asset</h1>
+          <p>
+            Fill in the fields and validate your asset. With no blockchain knowledge needed and in a completely decentralized way. <n-link to="/verify/about">Learn more</n-link>
+          </p>
+          <ValidationObserver ref="observer" v-slot="{ passes }">
+            <form class="form mt-1" @submit.prevent="passes(verifyAsset)">
+              <validation-provider
+                v-slot="{ errors }"
+                rules="required"
+                name="Assed ID"
+                :class="'form-group'"
+              >
+                <input
+                  v-model="formData.assetId"
+                  type="text"
+                  class="form-field"
+                  placeholder="Enter asset ID"
+                >
+                <label for="email" v-text="'Enter asset ID'" />
+                <div class="alert" v-text="errors[0]" />
+              </validation-provider>
+              <validation-provider
+                v-slot="{ errors }"
+                rules="required"
+                name="Ledger ID"
+                :class="'form-group'"
+              >
+                <input
+                  v-model="formData.assetLedgerId"
+                  type="text"
+                  class="form-field"
+                  placeholder="Enter ledger ID"
+                >
+                <label for="email" v-text="'Enter ledger ID'" />
+                <div class="alert" v-text="errors[0]" />
+              </validation-provider>
+              <validation-provider
+                v-slot="{ errors }"
+                rules="required|json"
+                name="Schema"
+                :class="'form-group'"
+              >
+                <div class="max-height">
+                  <resizable-textarea>
+                    <textarea
+                      v-model="formData.schema"
+                      type="text"
+                      rows="1"
+                      class="form-field code"
+                      placeholder="Enter asset schema"
+                    />
+                  </resizable-textarea>
+                  <label for="schema" v-text="'Enter asset schema'" />
+                </div>
+                <div class="alert" v-text="errors[0]" />
+              </validation-provider>
+              <validation-provider
+                v-slot="{ errors }"
+                rules="required|json"
+                name="Evidence"
+                :class="'form-group'"
+              >
+                <div class="max-height">
+                  <resizable-textarea>
+                    <textarea
+                      v-model="formData.evidence"
+                      type="text"
+                      rows="1"
+                      class="form-field code"
+                      placeholder="Enter asset evidence"
+                    />
+                  </resizable-textarea>
+                  <label for="evidence" v-text="'Enter asset evidence'" />
+                </div>
+                <div class="alert" v-text="errors[0]" />
+              </validation-provider>
+              <validation-provider
+                v-slot="{ errors }"
+                rules="required|json"
+                name="Metadata"
+                :class="'form-group'"
+              >
+                <div class="max-height">
+                  <resizable-textarea>
+                    <textarea
+                      v-model="formData.metadata"
+                      type="text"
+                      rows="1"
+                      class="form-field code"
+                      placeholder="Enter asset Metadata"
+                    />
+                  </resizable-textarea>
+                  <label for="metadata" v-text="'Enter asset metadata'" />
+                </div>
+                <div class="alert" v-text="errors[0]" />
+              </validation-provider>
+              <div class="form-group">
+                <select v-model="formData.network" name="network" class="form-field select">
+                  <option
+                    v-for="network in networks"
+                    :key="network.id"
+                    :value="network.id"
+                    v-text="network.label"
+                  />
+                </select>
+                <label for="metadata" v-text="'Select network'" />
+              </div>
+              <button type="submit" class="button mt-2">
+                Verify Asset
+              </button>
+            </form>
+          </ValidationObserver>
         </div>
-        <n-link
-          to="/verify"
-          class="button mt-2"
-        >
-          Start verifying
-        </n-link>
-      </div>
+        <div v-else-if="loading" key="loading" class="loading">
+          <img src="~/assets/loader.svg" alt="Loader" class="mb-2">
+          Verifying asset ...
+        </div>
+        <div v-else key="results" class="results">
+          <results :data="formData" />
+          <a class="button mt-2" @click="resetForm()">
+            Verify Another Asset
+          </a>
+        </div>
+      </transition>
+      <notice />
     </div>
     <Footer />
   </div>
 </template>
 
 <script>
+import { HttpProvider as EthereumHttpProvider } from '@0xcert/ethereum-http-provider'
+import { HttpProvider as WanchainHttpProvider } from '@0xcert/wanchain-http-provider'
+import { AssetLedger as EthereumAssetLedger } from '@0xcert/ethereum-asset-ledger'
+import { AssetLedger as WanchainAssetLedger } from '@0xcert/wanchain-asset-ledger'
+import { Cert } from '@0xcert/cert'
+import { ValidationObserver, ValidationProvider, extend, localize } from 'vee-validate'
+import { required, email } from 'vee-validate/dist/rules'
+import en from 'vee-validate/dist/locale/en.json'
 import Footer from '~/components/Footer'
 import Header from '~/components/Header'
+import Notice from '~/components/Notice'
+import ResizableTextarea from '~/components/ResizableTextarea'
+import Results from '~/components/Results'
+
+extend('required', required)
+extend('email', email)
+localize({ en })
+extend('json', {
+  message: 'The {_field_} filed is not a valid JSON.',
+  validate: (value) => {
+    try {
+      JSON.parse(value)
+      return true
+    } catch (error) {
+      return false
+    }
+  }
+})
 
 export default {
   components: {
+    Notice,
     Header,
-    Footer
+    Footer,
+    Results,
+    ResizableTextarea,
+    ValidationProvider,
+    ValidationObserver
+  },
+  data () {
+    return {
+      formData: {
+        assetId: this.$route.query.assetId || '',
+        assetLedgerId: this.$route.query.assetLedgerId || '',
+        schema: this.$route.query.schema || '',
+        evidence: this.$route.query.evidence || '',
+        metadata: this.$route.query.metadata || '',
+        network: this.$route.query.network || 3,
+        isValid: false
+      },
+      submitted: false,
+      loading: false,
+      networks: [
+        {
+          id: 1,
+          label: 'Ethereum - Mainnet',
+          url: 'https://mainnet.infura.io/v3/a491d5932d4d47b58f4ba2e043278ac4'
+        },
+        {
+          id: 2,
+          label: 'Ethereum - Rinkeby',
+          url: 'https://rinkeby.infura.io/v3/a491d5932d4d47b58f4ba2e043278ac4'
+        },
+        {
+          id: 3,
+          label: 'Ethereum - Ropsten',
+          url: 'https://ropsten.infura.io/v3/a491d5932d4d47b58f4ba2e043278ac4'
+        },
+        {
+          id: 4,
+          label: 'Ethereum - Kovan',
+          url: 'https://kovan.infura.io/v3/a491d5932d4d47b58f4ba2e043278ac4'
+        },
+        {
+          id: 5,
+          label: 'Ethereum - Goerli',
+          url: 'https://goerli.infura.io/v3/a491d5932d4d47b58f4ba2e043278ac4'
+        },
+        {
+          id: 6,
+          label: 'Wanchain - Mainnet',
+          url: 'http://139.59.44.13:9000/node/5c9a341860626f3d2aad1dc0'
+        },
+        {
+          id: 7,
+          label: 'Wanchain - Testnet',
+          url: 'http://139.59.44.13:9000/node/5c9a341860626f3d2aad1dc0'
+        }
+      ]
+    }
+  },
+  computed: {
+    currentNetwork () {
+      return this.networks.find(x => x.id === this.formData.network)
+    },
+    assetLedger () {
+      let httpProvider
+      switch (this.formData.network) {
+        case 1:
+          httpProvider = new EthereumHttpProvider({ url: this.currentNetwork.url })
+          return new EthereumAssetLedger(httpProvider, this.formData.assetLedgerId)
+        case 2:
+          httpProvider = new EthereumHttpProvider({ url: this.currentNetwork.url })
+          return new EthereumAssetLedger(httpProvider, this.formData.assetLedgerId)
+        case 3:
+          httpProvider = new EthereumHttpProvider({ url: this.currentNetwork.url })
+          return new EthereumAssetLedger(httpProvider, this.formData.assetLedgerId)
+        case 4:
+          httpProvider = new EthereumHttpProvider({ url: this.currentNetwork.url })
+          return new EthereumAssetLedger(httpProvider, this.formData.assetLedgerId)
+        case 5:
+          httpProvider = new EthereumHttpProvider({ url: this.currentNetwork.url })
+          return new EthereumAssetLedger(httpProvider, this.formData.assetLedgerId)
+        case 6:
+          httpProvider = new WanchainHttpProvider({ url: this.currentNetwork.url })
+          return new WanchainAssetLedger(httpProvider, this.formData.assetLedgerId)
+        case 7:
+          httpProvider = new WanchainHttpProvider({ url: this.currentNetwork.url })
+          return new WanchainAssetLedger(httpProvider, this.formData.assetLedgerId)
+        default:
+          throw new Error('Invalid network ID')
+      }
+    }
+  },
+  async mounted () {
+    const params = this.$route.query
+    if (Object.keys(params).length > 0 && params.constructor === Object) {
+      const isFormValid = await this.$refs.observer.validate()
+      if (!isFormValid) { return }
+      this.verifyAsset()
+    }
+  },
+  methods: {
+    async calculate (data) {
+      try {
+        const schema = JSON.parse(data.schema || {})
+        const evidence = JSON.parse(data.evidence || {})
+        const metadata = JSON.parse(data.metadata || {})
+        const info = await this.assetLedger.getInfo()
+        const asset = await this.assetLedger.getAsset(data.assetId)
+        const cert = new Cert({ schema })
+        const schemaId = await cert.identify()
+        if (schemaId !== info.schemaId) {
+          throw new Error('The provided schema is differet from ledger.')
+        }
+        const imprint = await cert.calculate(metadata, evidence)
+        if (imprint !== asset.imprint) {
+          throw new Error('Imprint does not match.')
+        }
+        this.formData.isValid = true
+      } catch (error) {
+        this.formData.isValid = false
+      }
+    },
+    async verifyAsset () {
+      this.loading = true
+      this.submitted = true
+      await this.calculate(this.formData)
+      window.scrollTo(0, 0)
+      this.loading = false
+    },
+    resetForm () {
+      this.submitted = false
+      this.loading = false
+      this.formData = {}
+      this.formData.network = 3
+      this.$router.replace('/verify')
+    }
   }
 }
 </script>
+
+<style lang="scss">
+@import '~assets/_forms.scss';
+
+.loading {
+  min-height: 462px;
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  align-items: center;
+}
+</style>
