@@ -5,11 +5,12 @@
         <h1 v-if="data.isValid">
           The asset is valid.
         </h1>
-        <h1 v-esle>
+        <h1 v-else>
           The asset is invalid.
         </h1>
         <p class="max-width">
-          Below, you can see the status of each of the asset’s metadata field. If the status is ⚠️, the value of that field cannot be checked since it's set as private or does not exist within the asset.
+          This is the result of the 0xcert Verifier check.
+          If the validity status of a field is ⚠️, its values cannot be checked since it’s set as private or does not exist within the asset.
         </p>
       </div>
       <img v-if="data.isValid" src="/images/trusted.svg" alt="Valid">
@@ -113,7 +114,7 @@ export default {
 <style lang="scss" scoped>
   .table {
     width: 100%;
-    margin: 2rem 0;
+    margin: 2rem 0 0;
     border-collapse: collapse;
 
     td {
