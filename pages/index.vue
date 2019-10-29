@@ -6,7 +6,9 @@
         <div v-if="!submitted" key="input" class="body">
           <h1>Verify your asset</h1>
           <p>
-            Fill in the fields and validate your asset. With no blockchain knowledge needed and in a completely decentralized way. <n-link to="/verify/about">Learn more</n-link>
+            Fill in the fields and validate your asset. With no blockchain knowledge needed and in a completely decentralized way. <n-link to="/verify/about">
+              Learn more
+            </n-link>
           </p>
           <ValidationObserver ref="observer" v-slot="{ passes }">
             <form class="form mt-1" @submit.prevent="passes(verifyAsset)">
@@ -136,9 +138,7 @@
 
 <script>
 import { HttpProvider as EthereumHttpProvider } from '@0xcert/ethereum-http-provider'
-import { HttpProvider as WanchainHttpProvider } from '@0xcert/wanchain-http-provider'
 import { AssetLedger as EthereumAssetLedger } from '@0xcert/ethereum-asset-ledger'
-import { AssetLedger as WanchainAssetLedger } from '@0xcert/wanchain-asset-ledger'
 import { Cert } from '@0xcert/cert'
 import { ValidationObserver, ValidationProvider, extend, localize } from 'vee-validate'
 import { required, email } from 'vee-validate/dist/rules'
@@ -182,7 +182,7 @@ export default {
         schema: this.$route.query.schema || '',
         evidence: this.$route.query.evidence || '',
         metadata: this.$route.query.metadata || '',
-        network: this.$route.query.network || 3,
+        network: this.$route.query.network || 1,
         isValid: false
       },
       submitted: false,
@@ -212,16 +212,6 @@ export default {
           id: 5,
           label: 'Ethereum - Goerli',
           url: 'https://goerli.infura.io/v3/a491d5932d4d47b58f4ba2e043278ac4'
-        },
-        {
-          id: 6,
-          label: 'Wanchain - Mainnet',
-          url: 'http://139.59.44.13:9000/node/5c9a341860626f3d2aad1dc0'
-        },
-        {
-          id: 7,
-          label: 'Wanchain - Testnet',
-          url: 'http://139.59.44.13:9000/node/5c9a341860626f3d2aad1dc0'
         }
       ]
     }
@@ -248,12 +238,6 @@ export default {
         case 5:
           httpProvider = new EthereumHttpProvider({ url: this.currentNetwork.url })
           return new EthereumAssetLedger(httpProvider, this.formData.assetLedgerId)
-        case 6:
-          httpProvider = new WanchainHttpProvider({ url: this.currentNetwork.url })
-          return new WanchainAssetLedger(httpProvider, this.formData.assetLedgerId)
-        case 7:
-          httpProvider = new WanchainHttpProvider({ url: this.currentNetwork.url })
-          return new WanchainAssetLedger(httpProvider, this.formData.assetLedgerId)
         default:
           throw new Error('Invalid network ID')
       }
