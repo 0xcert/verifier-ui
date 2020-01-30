@@ -139,6 +139,8 @@
 <script>
 import { HttpProvider as EthereumHttpProvider } from '@0xcert/ethereum-http-provider'
 import { AssetLedger as EthereumAssetLedger } from '@0xcert/ethereum-asset-ledger'
+import { HttpProvider as WanchainHttpProvider } from '@0xcert/wanchain-http-provider'
+import { AssetLedger as WanchainAssetLedger } from '@0xcert/wanchain-asset-ledger'
 import { Cert } from '@0xcert/cert'
 import { ValidationObserver, ValidationProvider, extend, localize } from 'vee-validate'
 import { required, email } from 'vee-validate/dist/rules'
@@ -191,27 +193,37 @@ export default {
         {
           id: 1,
           label: 'Ethereum - Mainnet',
-          url: 'https://mainnet.infura.io/v3/a491d5932d4d47b58f4ba2e043278ac4'
+          url: '//mainnet.infura.io/v3/a491d5932d4d47b58f4ba2e043278ac4'
         },
         {
           id: 2,
           label: 'Ethereum - Rinkeby',
-          url: 'https://rinkeby.infura.io/v3/a491d5932d4d47b58f4ba2e043278ac4'
+          url: '//rinkeby.infura.io/v3/a491d5932d4d47b58f4ba2e043278ac4'
         },
         {
           id: 3,
           label: 'Ethereum - Ropsten',
-          url: 'https://ropsten.infura.io/v3/a491d5932d4d47b58f4ba2e043278ac4'
+          url: '//ropsten.infura.io/v3/a491d5932d4d47b58f4ba2e043278ac4'
         },
         {
           id: 4,
           label: 'Ethereum - Kovan',
-          url: 'https://kovan.infura.io/v3/a491d5932d4d47b58f4ba2e043278ac4'
+          url: '//kovan.infura.io/v3/a491d5932d4d47b58f4ba2e043278ac4'
         },
         {
           id: 5,
           label: 'Ethereum - Goerli',
-          url: 'https://goerli.infura.io/v3/a491d5932d4d47b58f4ba2e043278ac4'
+          url: '//goerli.infura.io/v3/a491d5932d4d47b58f4ba2e043278ac4'
+        },
+        {
+          id: 6,
+          label: 'Wanchain - Mainnet',
+          url: '//gwan-ssl.wandevs.org:56891'
+        },
+        {
+          id: 7,
+          label: 'Wanchain - Testnet',
+          url: '//gwan-ssl.wandevs.org:46891/'
         }
       ]
     }
@@ -238,6 +250,12 @@ export default {
         case 5:
           httpProvider = new EthereumHttpProvider({ url: this.currentNetwork.url })
           return new EthereumAssetLedger(httpProvider, this.formData.assetLedgerId)
+        case 6:
+          httpProvider = new WanchainHttpProvider({ url: this.currentNetwork.url })
+          return new WanchainAssetLedger(httpProvider, this.formData.assetLedgerId)
+        case 7:
+          httpProvider = new WanchainHttpProvider({ url: this.currentNetwork.url })
+          return new WanchainAssetLedger(httpProvider, this.formData.assetLedgerId)
         default:
           throw new Error('Invalid network ID')
       }
