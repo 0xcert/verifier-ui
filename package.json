@@ -15,11 +15,13 @@
     "@0xcert/cert": "^2.0.0-beta1",
     "@0xcert/ethereum-asset-ledger": "^2.0.0-beta1",
     "@0xcert/ethereum-http-provider": "^2.0.0-beta1",
+    "@0xcert/ethereum-bitski-frontend-provider": "^2.0.0-beta1",
     "@0xcert/wanchain-asset-ledger": "^2.0.0-beta1",
     "@0xcert/wanchain-http-provider": "^2.0.0-beta1",
     "@nuxtjs/axios": "^5.9.3",
     "nuxt": "^2.11.0",
-    "vee-validate": "^3.2.3"
+    "vee-validate": "^3.2.3",
+    "qrcode-with-logos": "1.0.1"
   },
   "devDependencies": {
     "@nuxtjs/eslint-config": "^2.0.0",
