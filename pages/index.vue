@@ -10,6 +10,15 @@
               Learn more
             </n-link>
           </p>
+          <button class="button mt-2" @click="getAssetInfo()">
+            Fill data
+          </button>
+          <button class="button mt-2" @click="generateQRCode()">
+            Generate QR code
+          </button>
+          <button class="button mt-2" @click="downloadQRCode()">
+            Download QR code
+          </button><!-- // todo dont if qr code not generated -->
           <ValidationObserver ref="observer" v-slot="{ passes }">
             <form class="form mt-1" @submit.prevent="passes(verifyAsset)">
               <validation-provider
@@ -53,7 +62,7 @@
                     <textarea
                       v-model="formData.schema"
                       type="text"
-                      rows="1"
+                      rows="5"
                       class="form-field code"
                       placeholder="Enter asset schema"
                     />
@@ -73,7 +82,7 @@
                     <textarea
                       v-model="formData.evidence"
                       type="text"
-                      rows="1"
+                      rows="5"
                       class="form-field code"
                       placeholder="Enter asset evidence"
                     />
@@ -93,7 +102,7 @@
                     <textarea
                       v-model="formData.metadata"
                       type="text"
-                      rows="1"
+                      rows="5"
                       class="form-field code"
                       placeholder="Enter asset Metadata"
                     />
@@ -130,6 +139,11 @@
           </a>
         </div>
       </transition>
+
+      <div>
+        <canvas ref="canvas" />
+        <img ref="image" src="" alt="">
+      </div>
       <notice />
     </div>
     <Footer />
@@ -138,9 +152,11 @@
 
 <script>
 import { HttpProvider as EthereumHttpProvider } from '@0xcert/ethereum-http-provider'
+import { BitskiProvider } from '@0xcert/ethereum-bitski-frontend-provider'
 import { AssetLedger as EthereumAssetLedger } from '@0xcert/ethereum-asset-ledger'
 import { HttpProvider as WanchainHttpProvider } from '@0xcert/wanchain-http-provider'
 import { AssetLedger as WanchainAssetLedger } from '@0xcert/wanchain-asset-ledger'
+import QrCodeWithLogo from 'qrcode-with-logos'
 import { Cert } from '@0xcert/cert'
 import { ValidationObserver, ValidationProvider, extend, localize } from 'vee-validate'
 import { required, email } from 'vee-validate/dist/rules'
@@ -180,11 +196,11 @@ export default {
     return {
       formData: {
         assetId: this.$route.query.assetId || '',
-        assetLedgerId: this.$route.query.assetLedgerId || '',
+        assetLedgerId: this.$route.query.ledgerId || '',
         schema: this.$route.query.schema || '',
         evidence: this.$route.query.evidence || '',
         metadata: this.$route.query.metadata || '',
-        network: this.$route.query.network || 1,
+        network: Number(this.$route.query.network) || 1,
         isValid: false
       },
       submitted: false,
@@ -225,7 +241,8 @@ export default {
           label: 'Wanchain - Testnet',
           url: '//gwan-ssl.wandevs.org:46891/'
         }
-      ]
+      ],
+      qecode: null
     }
   },
   computed: {
@@ -239,7 +256,12 @@ export default {
           httpProvider = new EthereumHttpProvider({ url: this.currentNetwork.url })
           return new EthereumAssetLedger(httpProvider, this.formData.assetLedgerId)
         case 2:
-          httpProvider = new EthereumHttpProvider({ url: this.currentNetwork.url })
+          // httpProvider = new EthereumHttpProvider({
+          //   url: this.currentNetwork.url
+          // })
+          httpProvider = new BitskiProvider({
+            network: 'rinkeby'
+          })
           return new EthereumAssetLedger(httpProvider, this.formData.assetLedgerId)
         case 3:
           httpProvider = new EthereumHttpProvider({ url: this.currentNetwork.url })
@@ -263,6 +285,9 @@ export default {
   },
   async mounted () {
     const params = this.$route.query
+    if (this.formData.assetId && this.formData.assetLedgerId && this.formData.network) {
+      await this.getAssetInfo()
+    }
     if (Object.keys(params).length > 0 && params.constructor === Object) {
       const isFormValid = await this.$refs.observer.validate()
       if (!isFormValid) { return }
@@ -291,6 +316,17 @@ export default {
         this.formData.isValid = false
       }
     },
+    async getAssetInfo () {
+      const asset = await this.assetLedger.getAsset(this.formData.assetId)
+      if (asset.uri) {
+        try {
+          const result = await this.$axios.get(asset.uri)
+          this.formData.metadata = JSON.stringify(result.data)
+          this.formData.schema = JSON.stringify((await this.$axios.get(result.data.$schema)).data)
+          this.formData.evidence = JSON.stringify((await this.$axios.get(result.data.$evidence)).data)
+        } catch {}
+      }
+    },
     async verifyAsset () {
       this.loading = true
       this.submitted = true
@@ -298,11 +334,35 @@ export default {
       window.scrollTo(0, 0)
       this.loading = false
     },
+    async generateQRCode () {
+      if (this.formData.assetId && this.formData.assetLedgerId && this.formData.network) {
+        this.qrcode = new QrCodeWithLogo({
+          canvas: this.$refs.canvas,
+          content: `https://verify.0xcert.org?assetId=${this.formData.assetId}&ledgerId=${this.formData.assetLedgerId}&network=${this.formData.network}`,
+          width: 380,
+          image: this.$refs.image,
+          logo: {
+            src: 'https://verify.0xcert.org/images/0xcert-logo-ico.svg',
+            borderRadius: 0,
+            logoSize: 0.15,
+            borderSize: 0.03
+          }
+        })
+        await this.qrcode.toImage()
+      } else {
+        // TODO handle
+      }
+    },
+    async downloadQRCode () {
+      if (this.qrcode) {
+        await this.qrcode.downloadImage(this.formData.assetId)
+      }
+    },
     resetForm () {
       this.submitted = false
       this.loading = false
       this.formData = {}
-      this.formData.network = 3
+      this.formData.network = 1
       this.$router.replace('/')
     }
   }
