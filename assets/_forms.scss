@@ -136,9 +136,14 @@ select {
   background: var(--primary-color);
   color: white;
   text-decoration: none;
+
+  &:disabled {
+    cursor: default;
+    opacity: .5;
+  }
 }
 
-.button:hover {
+.button:enabled:hover {
   background: var(--primary-color-hover);
 }
 

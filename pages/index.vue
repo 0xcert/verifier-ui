@@ -2,25 +2,38 @@
   <div class="container">
     <div class="main box">
       <Header />
-      <transition name="fade" mode="out-in">
-        <div v-if="!submitted" key="input" class="body">
-          <h1>Verify your asset</h1>
-          <p>
-            Fill in the fields and validate your asset. With no blockchain knowledge needed and in a completely decentralized way. <n-link to="/about">
-              Learn more
-            </n-link>
-          </p>
-          <button class="button mt-2" @click="getAssetInfo()">
-            Fill data
-          </button>
-          <button class="button mt-2" @click="generateQRCode()">
-            Generate QR code
-          </button>
-          <button class="button mt-2" @click="downloadQRCode()">
-            Download QR code
-          </button><!-- // todo dont if qr code not generated -->
-          <ValidationObserver ref="observer" v-slot="{ passes }">
+      <div class="tabs">
+        <span
+          v-for="(tab, index) in tabs"
+          :key="tab.id"
+          :class="['tab', 'tab-' + index, {active: tab.active}]"
+          @click="toggle(tabs[index])"
+        >
+          {{ tab.label }}
+        </span>
+      </div>
+      <ValidationObserver ref="observer" v-slot="{ passes, invalid }">
+        <transition name="fade" mode="out-in">
+          <div v-if="state === 'form'" key="input" class="body">
+            <h1>Verify your asset</h1>
+            <p class="pb-2">
+              To start verification, you can fill first three fields than fill other by clicking <strong>Fill data</strong> button, which retrive the data from the blockchain. You can either manually enter all the fields. When done, click <strong>Verify asset</strong>.
+              <n-link to="/about">
+                Learn more
+              </n-link>
+            </p>
             <form class="form mt-1" @submit.prevent="passes(verifyAsset)">
+              <div class="form-group">
+                <select v-model="formData.network" name="network" class="form-field select">
+                  <option
+                    v-for="network in networks"
+                    :key="network.id"
+                    :value="network.id"
+                    v-text="network.label"
+                  />
+                </select>
+                <label for="metadata" v-text="'Select network'" />
+              </div>
               <validation-provider
                 v-slot="{ errors }"
                 rules="required"
@@ -111,39 +124,100 @@
                 </div>
                 <div class="alert" v-text="errors[0]" />
               </validation-provider>
-              <div class="form-group">
-                <select v-model="formData.network" name="network" class="form-field select">
-                  <option
-                    v-for="network in networks"
-                    :key="network.id"
-                    :value="network.id"
-                    v-text="network.label"
-                  />
-                </select>
-                <label for="metadata" v-text="'Select network'" />
-              </div>
-              <button type="submit" class="button mt-2">
+              <button class="button mt-2" @click="getAssetInfo()">
+                Fill data
+              </button>
+              <button type="submit" :disabled="invalid" class="button mt-2">
                 Verify Asset
               </button>
             </form>
-          </ValidationObserver>
-        </div>
-        <div v-else-if="loading" key="loading" class="loading">
-          <img src="~/assets/loader.svg" alt="Loader" class="mb-2">
-          Verifying asset ...
-        </div>
-        <div v-else key="results" class="results">
-          <results :data="formData" />
-          <a class="button mt-2" @click="resetForm()">
-            Verify Another Asset
-          </a>
-        </div>
-      </transition>
-
-      <div>
-        <canvas ref="canvas" />
-        <img ref="image" src="" alt="">
-      </div>
+          </div>
+          <div v-if="state === 'loading'" key="loading" class="loading">
+            <img src="~/assets/loader.svg" alt="Loader" class="mb-2">
+            Verifying asset ...
+          </div>
+          <div v-if="state === 'loading-asset'" key="loading-asset" class="loading">
+            <img src="~/assets/loader.svg" alt="Loader" class="mb-2">
+            Loading asset data ...
+          </div>
+          <div v-if="state === 'results'" key="results" class="results">
+            <results :data="formData" />
+            <a class="button mt-2" @click="resetForm()">
+              Verify Another Asset
+            </a>
+          </div>
+          <div v-if="state === 'embed'" key="embed" class="embed">
+            <h1>Embed asset verification</h1>
+            <p class="pb-2">
+              Here you can embed your asset verification to your website or generate unique QR code for download and print. With embeded widget or QR code anyone can verify that your asset is valid.
+            </p>
+            <div class="form-group">
+              <select v-model="formData.network" name="network" class="form-field select">
+                <option
+                  v-for="network in networks"
+                  :key="network.id"
+                  :value="network.id"
+                  v-text="network.label"
+                />
+              </select>
+              <label for="metadata" v-text="'Select network'" />
+            </div>
+            <validation-provider
+              v-slot="{ errors }"
+              rules="required"
+              name="Assed ID"
+              :class="'form-group'"
+            >
+              <input
+                v-model="formData.assetId"
+                type="text"
+                class="form-field"
+                placeholder="Enter asset ID"
+              >
+              <label for="email" v-text="'Enter asset ID'" />
+              <div class="alert" v-text="errors[0]" />
+            </validation-provider>
+            <validation-provider
+              v-slot="{ errors }"
+              rules="required"
+              name="Ledger ID"
+              :class="'form-group'"
+            >
+              <input
+                v-model="formData.assetLedgerId"
+                type="text"
+                class="form-field"
+                placeholder="Enter ledger ID"
+              >
+              <label for="email" v-text="'Enter ledger ID'" />
+              <div class="alert" v-text="errors[0]" />
+            </validation-provider>
+            <button
+              class="button mt-1"
+              :disabled="invalid"
+              @click="generateQRCode()"
+            >
+              Generate QR code
+            </button>
+            <div class="qr-code">
+              <canvas ref="canvas" class="canvas" />
+              <img
+                ref="image"
+                src=""
+                class="code"
+                @error="regenerateQrCode()"
+              >
+              <button
+                v-if="qrCodeGenerated"
+                class="button"
+                @click="downloadQRCode()"
+              >
+                Download QR code
+              </button>
+            </div>
+          </div>
+        </transition>
+      </ValidationObserver>
       <notice />
     </div>
     <Footer />
@@ -194,6 +268,19 @@ export default {
   },
   data () {
     return {
+      qrCodeGenerated: false,
+      tabs: [
+        {
+          label: 'verify',
+          active: true,
+          state: 'form'
+        },
+        {
+          label: 'embed',
+          active: false,
+          state: 'embed'
+        }
+      ],
       formData: {
         assetId: this.$route.query.assetId || '',
         assetLedgerId: this.$route.query.ledgerId || '',
@@ -203,8 +290,7 @@ export default {
         network: Number(this.$route.query.network) || 1,
         isValid: false
       },
-      submitted: false,
-      loading: false,
+      state: 'form',
       networks: [
         {
           id: 1,
@@ -242,7 +328,7 @@ export default {
           url: '//gwan-ssl.wandevs.org:46891/'
         }
       ],
-      qecode: null
+      qrcode: null
     }
   },
   computed: {
@@ -295,6 +381,13 @@ export default {
     }
   },
   methods: {
+    toggle (tab) {
+      for (const item of this.tabs) {
+        item.active = false
+      }
+      tab.active = true
+      this.state = tab.state
+    },
     async calculate (data) {
       try {
         const schema = JSON.parse(data.schema || {})
@@ -324,43 +417,44 @@ export default {
           this.formData.metadata = JSON.stringify(result.data)
           this.formData.schema = JSON.stringify((await this.$axios.get(result.data.$schema)).data)
           this.formData.evidence = JSON.stringify((await this.$axios.get(result.data.$evidence)).data)
-        } catch {}
+        } catch {
+        }
       }
     },
     async verifyAsset () {
-      this.loading = true
-      this.submitted = true
+      this.state = 'loading'
       await this.calculate(this.formData)
       window.scrollTo(0, 0)
-      this.loading = false
+      this.state = 'results'
     },
     async generateQRCode () {
-      if (this.formData.assetId && this.formData.assetLedgerId && this.formData.network) {
-        this.qrcode = new QrCodeWithLogo({
-          canvas: this.$refs.canvas,
-          content: `https://verify.0xcert.org?assetId=${this.formData.assetId}&ledgerId=${this.formData.assetLedgerId}&network=${this.formData.network}`,
-          width: 380,
-          image: this.$refs.image,
-          logo: {
-            src: 'https://verify.0xcert.org/images/0xcert-logo-ico.svg',
-            borderRadius: 0,
-            logoSize: 0.15,
-            borderSize: 0.03
-          }
-        })
-        await this.qrcode.toImage()
-      } else {
-        // TODO handle
-      }
+      this.qrcode = new QrCodeWithLogo({
+        canvas: this.$refs.canvas,
+        content: `https://verify.0xcert.org?assetId=${this.formData.assetId}&ledgerId=${this.formData.assetLedgerId}&network=${this.formData.network}`,
+        width: 380,
+        image: this.$refs.image,
+        logo: {
+          src: 'https://verify.0xcert.org/images/0xcert-logo-ico.svg',
+          borderRadius: 0,
+          logoSize: 0.15,
+          borderSize: 0.03
+        }
+      })
+      await this.qrcode.toImage()
+      this.qrCodeGenerated = true
     },
     async downloadQRCode () {
       if (this.qrcode) {
         await this.qrcode.downloadImage(this.formData.assetId)
       }
     },
+    async regenerateQrCode (event) {
+      if (this.qrCodeGenerated) {
+        await this.generateQRCode()
+      }
+    },
     resetForm () {
-      this.submitted = false
-      this.loading = false
+      this.state = 'form'
       this.formData = {}
       this.formData.network = 1
       this.$router.replace('/')
@@ -378,5 +472,19 @@ export default {
   flex-flow: column;
   justify-content: center;
   align-items: center;
+}
+
+.canvas {
+  position: absolute;
+}
+
+.qr-code {
+  margin-top: 1rem;
+  text-align: center;
+
+  .code {
+    display: block;
+    margin: 0 auto;
+  }
 }
 </style>
