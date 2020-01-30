@@ -25,9 +25,11 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="(row, key) in flatten(metadata)" :key="row[key]">
+        <tr v-for="(value, key) in flatten(metadata)" :key="value[key]">
           <td>{{ key }}</td>
-          <td>{{ row }}</td>
+          <td class="value">
+            {{ value }}
+          </td>
           <td v-if="data.isValid">
             <status :icon="isDescribedBySchema(key, schema) ? 'valid' : 'warning' " />
           </td>
@@ -116,36 +118,40 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  .table {
+.table {
+  width: 100%;
+  margin: 2rem 0 0;
+  border-collapse: collapse;
+
+  td {
+    padding: 8px 15px;
+  }
+
+  .value {
+    word-break: break-all;
+  }
+
+  thead {
+    font-weight: bold;
+    border-bottom: 2px solid rgba(0,0,0,0.4);
+  }
+
+  tbody tr:nth-child(even) td {
+      background-color: rgba(0,0,0,0.03);
+  }
+
+  td:first-child {
+    font-weight: bold;
+    padding-right: 2rem;
+    vertical-align: top;
+  }
+
+  td:nth-child(2) {
     width: 100%;
-    margin: 2rem 0 0;
-    border-collapse: collapse;
-
-    td {
-      padding: 8px 15px;
-    }
-
-    thead {
-      font-weight: bold;
-      border-bottom: 2px solid rgba(0,0,0,0.4);
-    }
-
-    tbody tr:nth-child(even) td {
-       background-color: rgba(0,0,0,0.03);
-    }
-
-    td:first-child {
-      font-weight: bold;
-      padding-right: 2rem;
-      vertical-align: top;
-    }
-
-    td:nth-child(2) {
-      width: 100%;
-    }
   }
+}
 
-  .max-width {
-    padding-right: 1rem;
-  }
+.max-width {
+  padding-right: 1rem;
+}
 </style>
