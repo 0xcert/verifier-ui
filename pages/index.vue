@@ -303,7 +303,7 @@ export default {
       this.loading = false
       this.formData = {}
       this.formData.network = 3
-      this.$router.replace('/verify')
+      this.$router.replace('/')
     }
   }
 }
