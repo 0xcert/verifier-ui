@@ -75,7 +75,7 @@
                     <textarea
                       v-model="formData.schema"
                       type="text"
-                      rows="5"
+                      rows="1"
                       class="form-field code"
                       placeholder="Enter asset schema"
                     />
@@ -95,7 +95,7 @@
                     <textarea
                       v-model="formData.evidence"
                       type="text"
-                      rows="5"
+                      rows="1"
                       class="form-field code"
                       placeholder="Enter asset evidence"
                     />
@@ -115,7 +115,7 @@
                     <textarea
                       v-model="formData.metadata"
                       type="text"
-                      rows="5"
+                      rows="1"
                       class="form-field code"
                       placeholder="Enter asset Metadata"
                     />
@@ -226,7 +226,7 @@
 
 <script>
 import { HttpProvider as EthereumHttpProvider } from '@0xcert/ethereum-http-provider'
-import { BitskiProvider } from '@0xcert/ethereum-bitski-frontend-provider'
+// import { BitskiProvider } from '@0xcert/ethereum-bitski-frontend-provider'
 import { AssetLedger as EthereumAssetLedger } from '@0xcert/ethereum-asset-ledger'
 import { HttpProvider as WanchainHttpProvider } from '@0xcert/wanchain-http-provider'
 import { AssetLedger as WanchainAssetLedger } from '@0xcert/wanchain-asset-ledger'
@@ -342,12 +342,12 @@ export default {
           httpProvider = new EthereumHttpProvider({ url: this.currentNetwork.url })
           return new EthereumAssetLedger(httpProvider, this.formData.assetLedgerId)
         case 2:
-          // httpProvider = new EthereumHttpProvider({
-          //   url: this.currentNetwork.url
-          // })
-          httpProvider = new BitskiProvider({
-            network: 'rinkeby'
+          httpProvider = new EthereumHttpProvider({
+            url: this.currentNetwork.url
           })
+          // httpProvider = new BitskiProvider({
+          //   network: 'rinkeby'
+          // })
           return new EthereumAssetLedger(httpProvider, this.formData.assetLedgerId)
         case 3:
           httpProvider = new EthereumHttpProvider({ url: this.currentNetwork.url })
