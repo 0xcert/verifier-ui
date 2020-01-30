@@ -6,7 +6,7 @@
         <div v-if="!submitted" key="input" class="body">
           <h1>Verify your asset</h1>
           <p>
-            Fill in the fields and validate your asset. With no blockchain knowledge needed and in a completely decentralized way. <n-link to="/verify/about">
+            Fill in the fields and validate your asset. With no blockchain knowledge needed and in a completely decentralized way. <n-link to="/about">
               Learn more
             </n-link>
           </p>
@@ -303,7 +303,7 @@ export default {
       this.loading = false
       this.formData = {}
       this.formData.network = 3
-      this.$router.replace('/verify')
+      this.$router.replace('/')
     }
   }
 }

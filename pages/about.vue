@@ -15,7 +15,7 @@
           <img width="95" height="54" src="/verifier/images/0xcert-verified.png" alt="0xcert verified">
         </div>
         <n-link
-          to="/verify"
+          to="/"
           class="button mt-2"
         >
           Start verifying
