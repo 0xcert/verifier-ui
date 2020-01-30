@@ -45,7 +45,7 @@ body {
 
 h1 {
   margin-bottom: 1rem;
-  font-size: 30px;
+  font-size: 26px;
   font-weight: 400;
   color: black;
 }
@@ -124,4 +124,27 @@ ul {
 .fade-enter,
 .fade-leave-to {
   opacity: 0;
+}
+
+// Tabs
+
+.tabs {
+  border-bottom: 1px solid var(--border-color);
+  margin-bottom: 2rem;
+  text-transform: uppercase;
+
+  .tab {
+    margin-right: 1rem;
+    margin-bottom: -1px;
+    padding: 1rem 8px;
+    display: inline-block;
+    cursor: pointer;
+  }
+
+  .tab:not(:first-child) {
+    margin-left: 1rem;
+  }
+  .active {
+    border-bottom: 2px solid;
+  }
 }
