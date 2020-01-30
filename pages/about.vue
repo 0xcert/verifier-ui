@@ -11,7 +11,7 @@
           <li><strong>Inspect</strong> asset content and metadata</li>
         </ul>
         <div class="flex">
-          <p>It provides verification for assets on <strong>Ethereum</strong> blockchain network. The 0xcert Verifier is powered by the 0xcert Framework and the enhanced non-fungible token Xcert.</p>
+          <p>It provides verification for assets on <strong>Ethereum</strong> and <strong>Wanchain</strong> blockchain networks. The 0xcert Verifier is powered by the 0xcert Framework and the enhanced non-fungible token Xcert.</p>
           <img width="95" height="54" src="/verifier/images/0xcert-verified.png" alt="0xcert verified">
         </div>
         <n-link

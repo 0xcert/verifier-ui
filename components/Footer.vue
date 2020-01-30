@@ -1,6 +1,6 @@
 <template>
   <div class="footer">
-    Copyright &copy; 2019 by <a href="https://www.0xcert.org">0xcert.org</a>
+    Copyright &copy; 2020 by <a href="https://0xcert.org">0xcert.org</a>
   </div>
 </template>
 

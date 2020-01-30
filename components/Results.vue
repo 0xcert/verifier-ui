@@ -64,15 +64,19 @@ export default {
   methods: {
     flatten (obj) {
       const result = {}
-
+      for (const [key] of Object.entries(obj)) {
+        if (obj[key] === null || obj[key].length === 0) {
+          delete obj[key]
+        }
+      }
       for (const i in obj) {
-        if (!obj.hasOwnProperty(i)) {
+        if (!Object.prototype.hasOwnProperty.call(obj, i)) {
           continue
         }
         if ((typeof obj[i]) === 'object' && obj[i] !== null) {
           const flatObject = this.flatten(obj[i])
           for (const x in flatObject) {
-            if (!flatObject.hasOwnProperty(x)) {
+            if (!Object.prototype.hasOwnProperty.call(flatObject, x)) {
               continue
             }
             result[i + '.' + x] = flatObject[x]
