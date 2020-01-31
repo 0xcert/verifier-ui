@@ -34,8 +34,13 @@ export default {
   },
   modules: [
     '@nuxtjs/axios',
-    '@nuxtjs/style-resources'
+    '@nuxtjs/style-resources',
+    '@nuxtjs/toast'
   ],
+  toast: {
+    position: 'bottom-right',
+    duration: 3000
+  },
   axios: {
   },
   build: {
