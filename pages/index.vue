@@ -199,6 +199,25 @@
             >
               Generate QR code
             </button>
+            <button
+              class="button mt-1"
+              :disabled="invalid"
+              @click="generateURL()"
+            >
+              Generate URL
+            </button>
+            <div v-if="url" class="url mt-2">
+              <label v-text="'URL'" />
+              <div class="field">
+                <img
+                  class="icon copy"
+                  src="~/assets/copy.svg"
+                  alt="Copy to clipboard"
+                  @click="copyToClipboard(url)"
+                >
+                <p v-text="url" />
+              </div>
+            </div>
             <div class="qr-code">
               <canvas ref="canvas" class="canvas" />
               <img
@@ -328,7 +347,8 @@ export default {
           url: '//gwan-ssl.wandevs.org:46891/'
         }
       ],
-      qrcode: null
+      qrcode: null,
+      url: ''
     }
   },
   computed: {
@@ -410,15 +430,16 @@ export default {
       }
     },
     async getAssetInfo () {
-      const asset = await this.assetLedger.getAsset(this.formData.assetId)
-      if (asset.uri) {
-        try {
+      try {
+        const asset = await this.assetLedger.getAsset(this.formData.assetId)
+        if (asset.uri) {
           const result = await this.$axios.get(asset.uri)
           this.formData.metadata = JSON.stringify(result.data)
           this.formData.schema = JSON.stringify((await this.$axios.get(result.data.$schema)).data)
           this.formData.evidence = JSON.stringify((await this.$axios.get(result.data.$evidence)).data)
-        } catch {
         }
+      } catch {
+        this.$toast.error('Error fetching asset information.')
       }
     },
     async verifyAsset () {
@@ -426,6 +447,13 @@ export default {
       await this.calculate(this.formData)
       window.scrollTo(0, 0)
       this.state = 'results'
+    },
+    generateURL () {
+      this.url = `https://verify.0xcert.org?assetId=${this.formData.assetId}&ledgerId=${this.formData.assetLedgerId}&network=${this.formData.network}`
+    },
+    copyToClipboard (text) {
+      this.$toast.success('Coppied to clipboard.')
+      navigator.clipboard.writeText(text)
     },
     async generateQRCode () {
       this.qrcode = new QrCodeWithLogo({
@@ -486,5 +514,32 @@ export default {
     display: block;
     margin: 0 auto;
   }
+}
+.url {
+
+  label {
+    font-weight: bold;
+  }
+}
+
+.field {
+  margin-top: 2px;
+  background-color: #ECEFF1;
+  border-radius: 4px;
+  padding: 10px 30px 10px 10px;
+  position: relative;
+
+  p {
+    margin-top: 5px;
+  }
+}
+
+.copy {
+  height: 15px;
+  cursor: pointer;
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  margin-top: -7px;
 }
 </style>

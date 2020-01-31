@@ -19,6 +19,7 @@
     "@0xcert/wanchain-asset-ledger": "^2.0.0-beta1",
     "@0xcert/wanchain-http-provider": "^2.0.0-beta1",
     "@nuxtjs/axios": "^5.9.3",
+    "@nuxtjs/toast": "^3.3.0",
     "nuxt": "^2.11.0",
     "vee-validate": "^3.2.3",
     "qrcode-with-logos": "1.0.1"
