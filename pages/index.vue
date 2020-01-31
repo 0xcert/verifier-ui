@@ -526,11 +526,13 @@ export default {
   margin-top: 2px;
   background-color: #ECEFF1;
   border-radius: 4px;
-  padding: 10px 30px 10px 10px;
+  padding: 14px 30px 10px 14px;
   position: relative;
 
   p {
     margin-top: 5px;
+    padding-right: 1rem;
+    word-break: break-all;
   }
 }
 
