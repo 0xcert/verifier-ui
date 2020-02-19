@@ -207,7 +207,7 @@
               Generate URL
             </button>
             <div v-if="url" class="url mt-2">
-              <label v-text="'URL'" />
+              <label v-text="'Asset URL:'" />
               <div class="field">
                 <img
                   class="icon copy"
@@ -530,8 +530,7 @@ export default {
   position: relative;
 
   p {
-    margin-top: 5px;
-    padding-right: 1rem;
+    padding-right: 1.5rem;
     word-break: break-all;
   }
 }
@@ -540,8 +539,7 @@ export default {
   height: 15px;
   cursor: pointer;
   position: absolute;
-  right: 8px;
-  top: 50%;
-  margin-top: -7px;
+  right: 12px;
+  top: 19px;
 }
 </style>
