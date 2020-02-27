@@ -413,11 +413,10 @@ export default {
         const schema = JSON.parse(data.schema || {})
         const evidence = JSON.parse(data.evidence || {})
         const metadata = JSON.parse(data.metadata || {})
-        const info = await this.assetLedger.getInfo()
         const asset = await this.assetLedger.getAsset(data.assetId)
         const cert = new Cert({ schema })
         const schemaId = await cert.identify()
-        if (schemaId !== info.schemaId) {
+        if (schemaId !== asset.schemaId) {
           throw new Error('The provided schema is differet from ledger.')
         }
         const imprint = await cert.calculate(metadata, evidence)
@@ -426,6 +425,7 @@ export default {
         }
         this.formData.isValid = true
       } catch (error) {
+        console.log(error)
         this.formData.isValid = false
       }
     },
