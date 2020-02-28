@@ -417,15 +417,14 @@ export default {
         const cert = new Cert({ schema })
         const schemaId = await cert.identify()
         if (schemaId !== asset.schemaId) {
-          throw new Error('The provided schema is differet from ledger.')
+          this.$toast.error('The provided schema is differet from ledger.')
         }
         const imprint = await cert.calculate(metadata, evidence)
         if (imprint !== asset.imprint) {
-          throw new Error('Imprint does not match.')
+          this.$toast.error('Imprint does not match.')
         }
         this.formData.isValid = true
       } catch (error) {
-        console.log(error)
         this.formData.isValid = false
       }
     },
@@ -515,8 +514,8 @@ export default {
     margin: 0 auto;
   }
 }
-.url {
 
+.url {
   label {
     font-weight: bold;
   }
