@@ -16,14 +16,3 @@ export default {
   }
 }
 </script>
-
-<style lang="css" scoped>
-.status {
-  display: flex;
-  font-weight: bold;
-}
-
-.status img {
-  margin-right: .5rem;
-}
-</style>
