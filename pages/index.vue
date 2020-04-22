@@ -410,6 +410,7 @@ export default {
     },
     async calculate (data) {
       try {
+        this.formData.isValid = true
         const schema = JSON.parse(data.schema || {})
         const evidence = JSON.parse(data.evidence || {})
         const metadata = JSON.parse(data.metadata || {})
@@ -417,13 +418,14 @@ export default {
         const cert = new Cert({ schema })
         const schemaId = await cert.identify()
         if (schemaId !== asset.schemaId) {
-          this.$toast.error('The provided schema is differet from ledger.')
+          this.$toast.error('The provided schema is different from ledger.')
+          this.formData.isValid = false
         }
         const imprint = await cert.calculate(metadata, evidence)
         if (imprint !== asset.imprint) {
           this.$toast.error('Imprint does not match.')
+          this.formData.isValid = false
         }
-        this.formData.isValid = true
       } catch (error) {
         this.formData.isValid = false
       }
