@@ -12,12 +12,12 @@
     "lint": "eslint --ext .js,.vue --ignore-path .gitignore . --fix"
   },
   "dependencies": {
-    "@0xcert/cert": "2.0.0-beta5",
-    "@0xcert/ethereum-asset-ledger": "2.0.0-beta5",
-    "@0xcert/ethereum-http-provider": "2.0.0-beta5",
-    "@0xcert/ethereum-bitski-frontend-provider": "2.0.0-beta5",
-    "@0xcert/wanchain-asset-ledger": "2.0.0-beta5",
-    "@0xcert/wanchain-http-provider": "2.0.0-beta5",
+    "@0xcert/cert": "2.0.1",
+    "@0xcert/ethereum-asset-ledger": "2.0.1",
+    "@0xcert/ethereum-http-provider": "2.0.1",
+    "@0xcert/ethereum-bitski-frontend-provider": "2.0.1",
+    "@0xcert/wanchain-asset-ledger": "2.0.1",
+    "@0xcert/wanchain-http-provider": "2.0.1",
     "@nuxtjs/axios": "^5.9.5",
     "@nuxtjs/toast": "^3.3.0",
     "nuxt": "^2.11.0",
