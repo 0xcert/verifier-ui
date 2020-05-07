@@ -13,27 +13,27 @@
     "deploy": "./deploy.sh"
   },
   "dependencies": {
-    "@0xcert/cert": "2.0.1",
-    "@0xcert/ethereum-asset-ledger": "2.0.1",
-    "@0xcert/ethereum-http-provider": "2.0.1",
-    "@0xcert/ethereum-bitski-frontend-provider": "2.0.1",
-    "@0xcert/wanchain-asset-ledger": "2.0.1",
-    "@0xcert/wanchain-http-provider": "2.0.1",
-    "@nuxtjs/axios": "^5.9.5",
+    "@0xcert/cert": "2.0.2",
+    "@0xcert/ethereum-asset-ledger": "2.0.2",
+    "@0xcert/ethereum-http-provider": "2.0.2",
+    "@0xcert/ethereum-bitski-frontend-provider": "2.0.2",
+    "@0xcert/wanchain-asset-ledger": "2.0.2",
+    "@0xcert/wanchain-http-provider": "2.0.2",
+    "@nuxtjs/axios": "^5.10.3",
     "@nuxtjs/toast": "^3.3.0",
-    "nuxt": "^2.11.0",
-    "vee-validate": "^3.2.5",
-    "qrcode-with-logos": "1.0.1"
+    "nuxt": "^2.12.2",
+    "vee-validate": "^3.3.0",
+    "qrcode-with-logos": "1.0.2"
   },
   "devDependencies": {
     "@nuxtjs/eslint-config": "^2.0.2",
-    "@nuxtjs/eslint-module": "^1.1.0",
+    "@nuxtjs/eslint-module": "^2.0.0",
     "@nuxtjs/style-resources": "^1.0.0",
     "babel-eslint": "^10.1.0",
     "eslint": "^6.8.0",
-    "eslint-plugin-nuxt": ">=0.5.1",
-    "node-sass": "^4.13.1",
+    "eslint-plugin-nuxt": ">=0.5.2",
+    "node-sass": "^4.14.1",
     "sass-loader": "^8.0.2",
-    "sass-resources-loader": "^2.0.1"
+    "sass-resources-loader": "^2.0.3"
   }
 }
